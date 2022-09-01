@@ -1,0 +1,194 @@
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+<div class="container mx-auto px-4 lg:px-0">
+  <div>
+    <h2 class="text-heading-level-3 lg:text-heading-level-2 text-murmur-grey-dark pb-16">{{ section.settings.title | escape }}</h2>
+  </div>
+
+  {% if section.blocks.size > 0 %}
+    <div class="collection-list-wrapper z-10 relative">
+
+      <slider-collection-list class="w-full relative">
+
+        {%- comment -%} buttons {%- endcomment -%}
+        <div class="hidden lg:block slider-collection-list__buttons">
+          <button class="slider-collection-list_nav-button bg-white rounded-full w-20 h-20 absolute top-0 left-0 z-10 shadow-md transition hover:scale-110" name="nav-previous">
+            <div class="flex h-full items-center justify-center">
+              {% render 'icon-arrow-slider', left: true %}
+            </div>
+          </button>
+      
+          <button class="slider-collection-list_nav-button bg-white rounded-full w-20 h-20 absolute right-0 z-20 shadow-md transition hover:scale-110" name="nav-next">
+            <div class="flex h-full items-center justify-center">
+              {% render 'icon-arrow-slider' %}
+            </div>
+          </button>
+        </div>
+        
+        {%- comment -%} wrapper {%- endcomment -%}
+        <ul class="flex gap-4 lg:gap-8 overflow-x-scroll"
+          id="Slider-{{ section.id }}"
+          role="list"
+        >
+
+          {%- liquid
+            assign columns = section.blocks.size
+            if columns > 3
+              assign columns = 3
+            endif
+          -%}
+          
+          {% comment %} items {% endcomment %}
+          {%- for block in section.blocks -%}
+            <li class="flex-shrink-0 w-60 lg:w-80" {{ block.shopify_attributes }}>
+              <a{% if block.settings.collection != blank and block.settings.collection.all_products_count > 0 %} href="{{ block.settings.collection.url }}"{% else %} role="link" aria-disabled="true"{% endif %}
+              >
+                <div class="">
+                  {%- if block.settings.collection.featured_image != blank -%}
+                    <div>
+                      
+                      <div class="rounded-xl media{% if section.blocks.size > 1 %} media--square{% endif %} overflow-hidden relative"
+                      >
+
+
+                        <img
+                          srcset="{%- if block.settings.collection.featured_image.width >= 165 -%}{{ block.settings.collection.featured_image | img_url: '165x' }} 165w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 330 -%}{{ block.settings.collection.featured_image | img_url: '330x' }} 330w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 535 -%}{{ block.settings.collection.featured_image | img_url: '535x' }} 535w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 750 -%}{{ block.settings.collection.featured_image | img_url: '750x' }} 750w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 1000 -%}{{ block.settings.collection.featured_image | img_url: '1000x' }} 1000w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 1500 -%}{{ block.settings.collection.featured_image | img_url: '1500x' }} 1500w,{%- endif -%}
+                            {%- if block.settings.collection.featured_image.width >= 3000 -%}{{ block.settings.collection.featured_image | img_url: '3000x' }} 3000w,{%- endif -%}
+                            {{ block.settings.collection.featured_image | img_url: 'master' }} {{ block.settings.collection.featured_image.width }}w"
+                          src="{{ block.settings.collection.featured_image | img_url: '1500x' }}"
+                          sizes="
+                          (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: columns }}px,
+                          (min-width: 750px) {% if section.blocks.size > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},
+                          calc(100vw - 3rem)"
+                          alt="{{ block.settings.collection.title | escape }}"
+                          height="{{ block.settings.collection.featured_image.height }}"
+                          width="{{ block.settings.collection.featured_image.width }}"
+                          loading="lazy"
+                          class="motion-reduce"
+                        >
+                        <div class="linear-gradient">
+                          <h3 class="absolute bottom-0 left-0 text-center w-full text-white">
+                            {%- if block.settings.collection.title != blank -%}
+                              {{- block.settings.collection.title | escape -}}
+                            {%- endif -%}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                  {%- else -%}
+                    <div class="rounded-xl media media--square overflow-hidden bg-murmur-grey-light">
+                      <div>
+                        <h3 class="text-white absolute bottom-0 left-0 w-full text-center py-8">
+                          {%- if block.settings.collection.title != blank -%}
+                            {{- block.settings.collection.title | escape -}}
+                          {%- endif -%}
+                        </h3> 
+                      </div>                 
+                    </div>
+                  {%- endif -%}
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if section.settings.swipe_on_mobile -%}
+          <div class="slider-buttons no-js-hidden{% if section.blocks.size < 5 %} medium-hide{% endif %}{% if section.blocks.size < 2 %} small-hide{% endif %}">
+            <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon-caret' %}</button>
+            <div class="slider-counter caption">
+              <span class="slider-counter--current">1</span>
+                <span aria-hidden="true"> / </span>
+                <span class="visually-hidden">{{ 'accessibility.of' | t }}</span>
+              <span class="slider-counter--total">{{ section.blocks.size }}</span>
+            </div>
+            <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon-caret' %}</button>
+          </div>
+        {%- endif -%}
+      </slider-collection-list>
+
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.collection-list.name",
+  "tag": "section",
+  "max_blocks": 15,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Shop by category",
+      "label": "t:sections.collection-list.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.collection-list.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.collection-list.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.collection-list.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.collection-list.settings.image_ratio.label",
+      "info": "t:sections.collection-list.settings.image_ratio.info"
+    },   
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.collection-list.settings.swipe_on_mobile.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "t:sections.collection-list.blocks.featured_collection.name",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.collection-list.blocks.featured_collection.settings.collection.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.collection-list.presets.name",
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

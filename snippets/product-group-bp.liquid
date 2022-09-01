@@ -1,0 +1,196 @@
+
+<ul class="cbb-also-bought-slider-list" style="display: inline-block; position: relative; left: 0px; padding: 0px; margin: 0px; list-style-type: none; border: none;">
+{% for g_product in product.metafields.custom.products_group.value  %}
+  
+{% if g_product.selected_or_first_available_variant.featured_image == null %}
+{% assign product_img = g_product.featured_image | img_url:"master" %}
+{% else %}
+{% assign product_img = g_product.selected_or_first_available_variant.featured_image | img_url:"master" %}
+{% endif %}
+  <li class="cbb-also-bought-product" style="display: inline-block; position: relative; float: none; list-style: none; vertical-align: top; white-space: normal; margin-right: 15px; padding: 0px; width: 238px;">
+    <a class="cbb-also-bought-product-image-link" tabindex="0" aria-hidden="true" role="none" data-href="{{ g_product.url }}/?variant={{ g_product.selected_or_first_available_variant.id }}" style="width: 100%; cursor: pointer; padding: 0px; position: relative; display: block;">
+      <div class="cbb-also-bought-product-image" style="overflow: hidden; background-position: center center; background-size: cover; background-repeat: no-repeat; background-image: url({{ product_img }}); width: 238px; height: 238px;">
+      </div>
+    </a>
+    <h3 class="cbb-also-bought-product-name" style="margin: 0.5em 0px; overflow-wrap: break-word; white-space: normal; font-size: 18px; font-weight: 400; line-height: 1.2em; min-height: 3em; border: none;">
+      <a href="{{ g_product.url }}/?variant={{ g_product.selected_or_first_available_variant.id }}" tabindex="0" role="link" style="padding: 0px; text-align: left; text-decoration: none;">{{ g_product.title }}</a>
+    </h3>
+    <select class="cbb-recommendations-variant-select" aria-label="Variant selector" style="display: block; appearance: menulist; background-image: none; width: 100%; max-width: 100%; font-size: 1em; font-weight: normal; border: 1px solid rgb(224, 224, 224); color: rgb(33, 33, 33); background-color: rgb(255, 255, 255); text-align: left; vertical-align: baseline; margin: 2px 0px; border-radius: 4px; height: 2em; min-height: 2em; max-height: 2em; padding: 0px 10px; line-height: 1em;">
+
+  {% for gvar in g_product.variants %}
+      <option value="{{ forloop.index0 }}" {% if g_product.selected_or_first_available_variant == gvar %} selected {% endif %} data-variant-image="{{ gvar.featured_image | img_url:'master' }}" data-variant-id="{{ gvar.id }}">{{ gvar.title }}</option>
+      {% endfor %}
+    </select>
+    <div class="cbb-also-bought-product-price-container" style="overflow-wrap: break-word; white-space: normal; line-height: 1.5em; font-size: initial;">
+      <s class="cbb-also-bought-product-compare-at-price" style="margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; white-space: nowrap; font-size: 1em; font-weight: 400; display: none;"></s>
+      <span class="cbb-also-bought-product-regular-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; color: rgb(18, 18, 18); font-weight: 400; display: inline;">
+        <span class="money" style="color: inherit; font-weight: inherit; font-size: inherit; text-decoration: inherit; white-space: nowrap;">{{ g_product.price | money }}</span>
+      </span>
+      <span class="cbb-also-bought-product-sale-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; font-weight: 400; display: none;"></span>
+    </div>
+<!--     <div class="num-block skin-2">
+      <div class="num-in">
+        <span class="minus dis"></span>
+        <input type="text" name="quantity" class="in-num" value="0">
+        <span class="plus"></span>
+      </div>
+    </div> -->
+    <div class="cbb-also-bought-error" style="display: none; background-color: rgb(255, 182, 193); border-radius: 4px; padding: 1em; margin-bottom: 10px;"></div>
+    <button class="cbb-also-bought-add-to-cart-button" style="display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 100%; margin-top: 2px; margin-left: 0px; border-style: none; cursor: pointer;">
+      <span class="translatable">Add to cart</span>
+    </button>
+  </li>
+  {% endfor %}
+{% comment %}
+  <li class="cbb-also-bought-product" style="display: inline-block; position: relative; float: none; list-style: none; vertical-align: top; white-space: normal; margin-right: 15px; padding: 0px; width: 238px;">
+    <a class="cbb-also-bought-product-image-link" tabindex="0" aria-hidden="true" role="none" data-href="/products/1000-thread-count-fitted-sheets?variant=41828989927584" style="width: 100%; cursor: pointer; padding: 0px; position: relative; display: block;">
+      <div class="cbb-also-bought-product-image" style="overflow: hidden; background-position: center center; background-size: cover; background-repeat: no-repeat; background-image: url(&quot;https://cdn.shopify.com/s/files/1/0604/6525/0464/products/MURMUR1000TCCloudGreyfittedsheetdetail_714x714.jpg?v=1649429968&quot;); width: 238px; height: 238px;"> </div>
+    </a>
+    <h3 class="cbb-also-bought-product-name" style="margin: 0.5em 0px; overflow-wrap: break-word; white-space: normal; font-size: 18px; font-weight: 400; line-height: 1.2em; min-height: 3em; border: none;">
+      <a href="/products/1000-thread-count-fitted-sheets?variant=41828989927584" tabindex="0" role="link" style="padding: 0px; text-align: left; text-decoration: none;">1000 Thread Count Fitted Sheets</a>
+    </h3>
+<!--     <div class="select-variant-label text-tiny">Super King / Cloud Grey</div>
+    <div class="button-container">
+      <button class="colour-swatch hidden" name="Single / Cloud Grey" title="Single / Cloud Grey" data-variant-id="41828989632672">Single / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="Single / Ivory" title="Single / Ivory" data-variant-id="41828989665440">Single / Ivory</button>
+      <button class="colour-swatch hidden" name="Single / White" title="Single / White" data-variant-id="41828989698208">Single / White</button>
+      <button class="colour-swatch hidden" name="Double / Cloud Grey" title="Double / Cloud Grey" data-variant-id="41828989730976">Double / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="Double / Ivory" title="Double / Ivory" data-variant-id="41828989763744">Double / Ivory</button>
+      <button class="colour-swatch hidden" name="Double / White" title="Double / White" data-variant-id="41828989796512">Double / White</button>
+      <button class="colour-swatch hidden" name="King / Cloud Grey" title="King / Cloud Grey" data-variant-id="41828989829280">King / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="King / Ivory" title="King / Ivory" data-variant-id="41828989862048">King / Ivory</button>
+      <button class="colour-swatch hidden" name="King / White" title="King / White" data-variant-id="41828989894816">King / White</button>
+      <button class="colour-swatch active" name="Super King / Cloud Grey" title="Super King / Cloud Grey" data-variant-id="41828989927584">Super King / Cloud Grey</button>
+      <button class="colour-swatch" name="Super King / Ivory" title="Super King / Ivory" data-variant-id="41828989960352">Super King / Ivory</button>
+      <button class="colour-swatch" name="Super King / White" title="Super King / White" data-variant-id="41828989993120">Super King / White</button>
+    </div> -->
+    <select class="cbb-recommendations-variant-select" aria-label="Variant selector" style="display: block; appearance: menulist; background-image: none; width: 100%; max-width: 100%; font-size: 1em; font-weight: normal; border: 1px solid rgb(224, 224, 224); color: rgb(33, 33, 33); background-color: rgb(255, 255, 255); text-align: left; vertical-align: baseline; margin: 2px 0px; border-radius: 4px; height: 2em; min-height: 2em; max-height: 2em; padding: 0px 10px; line-height: 1em;">
+      <option value="0" data-variant-id="41828989632672">Single / Cloud Grey</option>
+      <option value="1" data-variant-id="41828989665440">Single / Ivory</option>
+      <option value="2" data-variant-id="41828989698208">Single / White</option>
+      <option value="3" data-variant-id="41828989730976">Double / Cloud Grey</option>
+      <option value="4" data-variant-id="41828989763744">Double / Ivory</option>
+      <option value="5" data-variant-id="41828989796512">Double / White</option>
+      <option value="6" data-variant-id="41828989829280">King / Cloud Grey</option>
+      <option value="7" data-variant-id="41828989862048">King / Ivory</option>
+      <option value="8" data-variant-id="41828989894816">King / White</option>
+      <option value="9" data-variant-id="41828989927584">Super King / Cloud Grey</option>
+      <option value="10" data-variant-id="41828989960352">Super King / Ivory</option>
+      <option value="11" data-variant-id="41828989993120">Super King / White</option>
+    </select>
+    <div class="cbb-also-bought-product-price-container" style="overflow-wrap: break-word; white-space: normal; line-height: 1.5em; font-size: initial;">
+      <s class="cbb-also-bought-product-compare-at-price" style="margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; white-space: nowrap; font-size: 1em; font-weight: 400; display: none;"></s>
+      <span class="cbb-also-bought-product-regular-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; color: rgb(18, 18, 18); font-weight: 400; display: inline;">
+        <span class="money" style="color: inherit; font-weight: inherit; font-size: inherit; text-decoration: inherit; white-space: nowrap;">£1,000.00</span>
+      </span>
+      <span class="cbb-also-bought-product-sale-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; font-weight: 400; display: none;"></span>
+    </div>
+<!--     <div class="num-block skin-2">
+      <div class="num-in">
+        <span class="minus dis"></span>
+        <input type="text" name="quantity" class="in-num" value="0">
+        <span class="plus"></span>
+      </div>
+    </div> -->
+    <div class="cbb-also-bought-error" style="display: none; background-color: rgb(255, 182, 193); border-radius: 4px; padding: 1em; margin-bottom: 10px;"></div>
+    <button class="cbb-also-bought-add-to-cart-button" style="display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 100%; margin-top: 2px; margin-left: 0px; border-style: none; cursor: pointer;">
+      <span class="translatable">Add to cart</span>
+    </button>
+  </li>
+  <li class="cbb-also-bought-product" style="display: inline-block; position: relative; float: none; list-style: none; vertical-align: top; white-space: normal; margin-right: 15px; padding: 0px; width: 238px;"><a class="cbb-also-bought-product-image-link" tabindex="0" aria-hidden="true" role="none" data-href="/products/1000-thread-count-flat-sheets?variant=41828990779552" style="width: 100%; cursor: pointer; padding: 0px; position: relative; display: block;">
+    <div class="cbb-also-bought-product-image" style="overflow: hidden; background-position: center center; background-size: cover; background-repeat: no-repeat; background-image: url(&quot;https://cdn.shopify.com/s/files/1/0604/6525/0464/products/MURMUR1000TCCloudGreyflatsheetdetail_714x714.jpg?v=1649429968&quot;); width: 238px; height: 238px;"> </div>
+    </a>
+    <h3 class="cbb-also-bought-product-name" style="margin: 0.5em 0px; overflow-wrap: break-word; white-space: normal; font-size: 18px; font-weight: 400; line-height: 1.2em; min-height: 3em; border: none;">
+      <a href="/products/1000-thread-count-flat-sheets?variant=41828990779552" tabindex="0" role="link" style="padding: 0px; text-align: left; text-decoration: none;">1000 Thread Count Flat Sheets</a>
+    </h3>
+<!--     <div class="select-variant-label text-tiny">Super King / Cloud Grey</div>
+    <div class="button-container">
+      <button class="colour-swatch hidden" name="Single / Cloud Grey" title="Single / Cloud Grey" data-variant-id="41828990484640">Single / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="Single / Ivory" title="Single / Ivory" data-variant-id="41828990517408">Single / Ivory</button>
+      <button class="colour-swatch hidden" name="Single / White" title="Single / White" data-variant-id="41828990550176">Single / White</button>
+      <button class="colour-swatch hidden" name="Double / Cloud Grey" title="Double / Cloud Grey" data-variant-id="41828990582944">Double / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="Double / Ivory" title="Double / Ivory" data-variant-id="41828990615712">Double / Ivory</button>
+      <button class="colour-swatch hidden" name="Double / White" title="Double / White" data-variant-id="41828990648480">Double / White</button>
+      <button class="colour-swatch hidden" name="King / Cloud Grey" title="King / Cloud Grey" data-variant-id="41828990681248">King / Cloud Grey</button>
+      <button class="colour-swatch hidden" name="King / Ivory" title="King / Ivory" data-variant-id="41828990714016">King / Ivory</button>
+      <button class="colour-swatch hidden" name="King / White" title="King / White" data-variant-id="41828990746784">King / White</button>
+      <button class="colour-swatch active" name="Super King / Cloud Grey" title="Super King / Cloud Grey" data-variant-id="41828990779552">Super King / Cloud Grey</button>
+      <button class="colour-swatch" name="Super King / Ivory" title="Super King / Ivory" data-variant-id="41828990812320">Super King / Ivory</button>
+      <button class="colour-swatch" name="Super King / White" title="Super King / White" data-variant-id="41828990845088">Super King / White</button>
+    </div> -->
+    <select class="cbb-recommendations-variant-select" aria-label="Variant selector" style="display: block; appearance: menulist; background-image: none; width: 100%; max-width: 100%; font-size: 1em; font-weight: normal; border: 1px solid rgb(224, 224, 224); color: rgb(33, 33, 33); background-color: rgb(255, 255, 255); text-align: left; vertical-align: baseline; margin: 2px 0px; border-radius: 4px; height: 2em; min-height: 2em; max-height: 2em; padding: 0px 10px; line-height: 1em;">
+      <option value="0" data-variant-id="41828990484640">Single / Cloud Grey</option>
+      <option value="1" data-variant-id="41828990517408">Single / Ivory</option>
+      <option value="2" data-variant-id="41828990550176">Single / White</option>
+      <option value="3" data-variant-id="41828990582944">Double / Cloud Grey</option>
+      <option value="4" data-variant-id="41828990615712">Double / Ivory</option>
+      <option value="5" data-variant-id="41828990648480">Double / White</option>
+      <option value="6" data-variant-id="41828990681248">King / Cloud Grey</option>'
+      <option value="7" data-variant-id="41828990714016">King / Ivory</option>
+      <option value="8" data-variant-id="41828990746784">King / White</option>
+      <option value="9" data-variant-id="41828990779552">Super King / Cloud Grey</option>
+      <option value="10" data-variant-id="41828990812320">Super King / Ivory</option>
+      <option value="11" data-variant-id="41828990845088">Super King / White</option>
+    </select>
+    <div class="cbb-also-bought-product-price-container" style="overflow-wrap: break-word; white-space: normal; line-height: 1.5em; font-size: initial;">
+      <s class="cbb-also-bought-product-compare-at-price" style="margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; white-space: nowrap; font-size: 1em; font-weight: 400; display: none;"></s>
+      <span class="cbb-also-bought-product-regular-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; color: rgb(18, 18, 18); font-weight: 400; display: inline;">
+        <span class="money" style="color: inherit; font-weight: inherit; font-size: inherit; text-decoration: inherit; white-space: nowrap;">£1,000.00</span>
+      </span>
+      <span class="cbb-also-bought-product-sale-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; font-weight: 400; display: none;"></span>
+    </div>
+<!--     <div class="num-block skin-2">
+      <div class="num-in">
+        <span class="minus dis"></span>
+        <input type="text" name="quantity" class="in-num" value="0">
+        <span class="plus"></span>
+      </div>
+    </div> -->
+    <div class="cbb-also-bought-error" style="display: none; background-color: rgb(255, 182, 193); border-radius: 4px; padding: 1em; margin-bottom: 10px;"></div>
+    <button class="cbb-also-bought-add-to-cart-button" style="display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 100%; margin-top: 2px; margin-left: 0px; border-style: none; cursor: pointer;"><span class="translatable">Add to cart</span></button>
+  </li>
+  <li class="cbb-also-bought-product" style="display: inline-block; position: relative; float: none; list-style: none; vertical-align: top; white-space: normal; margin-right: 15px; padding: 0px; width: 238px;">
+    <a class="cbb-also-bought-product-image-link" tabindex="0" aria-hidden="true" role="none" data-href="/products/1000-thread-count-pillowcases?variant=41828991140000" style="width: 100%; cursor: pointer; padding: 0px; position: relative; display: block;">
+      <div class="cbb-also-bought-product-image" style="overflow: hidden; background-position: center center; background-size: cover; background-repeat: no-repeat; background-image: url(&quot;https://cdn.shopify.com/s/files/1/0604/6525/0464/products/MURMUR1000TCCloudGreycornerdetail_714x714.jpg?v=1649429968&quot;); width: 238px; height: 238px;"> </div>
+    </a>
+    <h3 class="cbb-also-bought-product-name" style="margin: 0.5em 0px; overflow-wrap: break-word; white-space: normal; font-size: 18px; font-weight: 400; line-height: 1.2em; min-height: 3em; border: none;">
+      <a href="/products/1000-thread-count-pillowcases?variant=41828991140000" tabindex="0" role="link" style="padding: 0px; text-align: left; text-decoration: none;">1000 Thread Count Pillowcases</a>
+    </h3>
+<!--     <div class="select-variant-label text-tiny">Standard / Cloud Grey</div>
+    <div class="button-container">
+      <button class="colour-swatch active" name="Standard / Cloud Grey" title="Standard / Cloud Grey" data-variant-id="41828991140000">Standard / Cloud Grey</button>
+      <button class="colour-swatch" name="Standard / Ivory" title="Standard / Ivory" data-variant-id="41828991172768">Standard / Ivory</button>
+      <button class="colour-swatch" name="Standard / White" title="Standard / White" data-variant-id="41828991205536">Standard / White</button>
+      <button class="colour-swatch" name="Square Oxford / Cloud Grey" title="Square Oxford / Cloud Grey" data-variant-id="41828991238304">Square Oxford / Cloud Grey</button>
+      <button class="colour-swatch" name="Square Oxford / Ivory" title="Square Oxford / Ivory" data-variant-id="41828991271072">Square Oxford / Ivory</button>
+      <button class="colour-swatch" name="Square Oxford / White" title="Square Oxford / White" data-variant-id="41828991303840">Square Oxford / White</button>
+    </div> -->
+    <select class="cbb-recommendations-variant-select" aria-label="Variant selector" style="display: block; appearance: menulist; background-image: none; width: 100%; max-width: 100%; font-size: 1em; font-weight: normal; border: 1px solid rgb(224, 224, 224); color: rgb(33, 33, 33); background-color: rgb(255, 255, 255); text-align: left; vertical-align: baseline; margin: 2px 0px; border-radius: 4px; height: 2em; min-height: 2em; max-height: 2em; padding: 0px 10px; line-height: 1em;">
+      <option value="0" data-variant-id="41828991140000">Standard / Cloud Grey</option>
+      <option value="1" data-variant-id="41828991172768">Standard / Ivory</option>
+      <option value="2" data-variant-id="41828991205536">Standard / White</option>
+      <option value="3" data-variant-id="41828991238304">Square Oxford / Cloud Grey</option>
+      <option value="4" data-variant-id="41828991271072">Square Oxford / Ivory</option>
+      <option value="5" data-variant-id="41828991303840">Square Oxford / White</option>
+    </select>
+    <div class="cbb-also-bought-product-price-container" style="overflow-wrap: break-word; white-space: normal; line-height: 1.5em; font-size: initial;">
+      <s class="cbb-also-bought-product-compare-at-price" style="margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; white-space: nowrap; font-size: 1em; font-weight: 400; display: none;"></s>
+      <span class="cbb-also-bought-product-regular-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; color: rgb(18, 18, 18); font-weight: 400; display: inline;">
+        <span class="money" style="color: inherit; font-weight: inherit; font-size: inherit; text-decoration: inherit; white-space: nowrap;">£1,000.00</span>
+      </span>
+      <span class="cbb-also-bought-product-sale-price" style="white-space: nowrap; margin-top: 0.2em; margin-left: 0.25em; margin-right: 0.25em; font-size: 1em; font-weight: 400; display: none;"></span>
+    </div>
+<!--     <div class="num-block skin-2">
+      <div class="num-in">
+        <span class="minus dis"></span>
+        <input type="text" name="quantity" class="in-num" value="0">
+        <span class="plus"></span>
+      </div>
+    </div> -->
+    <div class="cbb-also-bought-error" style="display: none; background-color: rgb(255, 182, 193); border-radius: 4px; padding: 1em; margin-bottom: 10px;"></div>
+    <button class="cbb-also-bought-add-to-cart-button" style="display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 100%; margin-top: 2px; margin-left: 0px; border-style: none; cursor: pointer;">
+      <span class="translatable">Add to cart</span>
+    </button>
+  </li>
+  {% endcomment %}
+</ul>

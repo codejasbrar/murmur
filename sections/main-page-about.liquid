@@ -1,0 +1,34 @@
+
+<link rel="stylesheet" href="{{ 'section-main-page.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-main-page.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div class="breadcrumb max-w-screen-xl mx-auto my-10 text-murmur-grey-dark">
+  <a href="/" class="text-murmur-grey-dark hover:underline"><strong>Home</strong></a> <strong>→</strong> <span>About</span>
+</div>
+
+<div class="header-images max-w-screen-xl my-14 mx-auto grid grid-cols-3 gap-4">
+  <img src="https://via.placeholder.com/350" class="object-cover w-full" alt="placeholder" />
+  <img src="https://via.placeholder.com/350" class="object-cover w-full" alt="placeholder" />
+  <img src="https://via.placeholder.com/350" class="object-cover w-full" alt="placeholder" />
+</div>
+
+<div class="page-width page-width--narrow">
+  <div class="rte prose lg:prose-xl">
+     <h1 class="main-page-title page-title h0">
+    {{ page.title | escape }}
+  </h1>
+
+    {{ page.content }}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "main-page-about",
+  "tag": "section"
+}
+{% endschema %}

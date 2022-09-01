@@ -1,0 +1,146 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'owl.carousel.min.css' | asset_url | stylesheet_tag }}
+{{ 'owl.theme.default.min.css' | asset_url | stylesheet_tag }}
+
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'template-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'template-collection.css' | asset_url | stylesheet_tag }}</noscript>
+
+<script src="{{ 'featured-collection.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+
+  if section.settings.expanded_view 
+    assign products_to_display = 8
+  else
+    assign products_to_display = 4
+  endif
+
+-%}
+
+<div class="container mx-auto px-0">
+  <div class="">
+    {%- if section.settings.title != blank -%}
+      <h2 class="text-heading-level-3 lg:text-heading-level-2 pb-16 text-murmur-grey-dark">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
+    {% comment %} {%- if section.settings.swipe_on_mobile -%}
+      <a href="{{ section.settings.collection.url }}" class="link underlined-link large-up-hide">{{ 'sections.featured_collection.view_all' | t }}</a>
+    {%- endif -%} {% endcomment %}
+  </div>
+
+  <slider-component class="slider-mobile-gutter">
+    <ul class="owl-carousel owl-theme best-sellers flex lg:grid lg:grid-cols-4 lg:gap-8 slider slider--tablet grid-cols-2" role="list">
+      {%- for product in section.settings.collection.products limit: products_to_display -%}
+{% if product.handle contains "docapp-free-gift-" %}{% continue %}{% endif %}
+
+        <li class="slider__slide w-full px-4">
+          {% render 'product-card',
+            product_card_product: product,
+            media_size: 'square',
+            show_secondary_image: section.settings.show_secondary_image
+          %}
+        </li>
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <li class="slider__slide">
+            {% render 'product-card-placeholder' %}
+          </li>
+        {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.collection.all_products_count > 2 and section.settings.swipe_on_mobile -%}
+      <div class="slider-buttons no-js-hidden{% if section.settings.collection.all_products_count < 4 %} medium-hide{% endif %}{% if section.settings.collection.all_products_count < 3 %} small-hide{% endif %}">
+        <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon-caret' %}</button>
+        <div class="slider-counter caption">
+          <span class="slider-counter--current">1</span>
+          <span aria-hidden="true"> / </span>
+          <span class="visually-hidden">{{ 'accessibility.of' | t }}</span>
+          <span class="slider-counter--total">{{ products_to_display }}</span>
+        </div>
+        <button type="button" class="slider-button slider-button--next flex justify-end items-center" name="next" aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon-caret' %}</button>
+      </div>
+    {%- endif -%}
+  </slider-component>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ 'owl.carousel.min.js' | asset_url }}" defer="defer"></script>
+
+<script>
+$(function () {
+  // Initialise Owl Carousel
+  $('.owl-carousel.best-sellers').owlCarousel({
+    loop: false,
+    margin: 0,
+    nav: false,
+    dots: true,
+    rewind: false,
+    lazyLoadEager: 8,
+    slideBy: 1,
+    responsive : {
+      // breakpoint from 0 up
+      0 : {
+          dots: true,
+          stagePadding: 30,
+          items: 1
+      },
+      // breakpoint from 640 up
+      640 : {
+          items: 4,
+      }
+    }
+  })
+});
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.featured-collection.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured collection",
+      "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.featured-collection.settings.collection.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "expanded_view",
+      "default": false,
+      "label": "Expanded View",
+      "info": "Show 8 products instead of 4 products"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": true,
+      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.featured-collection.settings.header.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.featured-collection.settings.show_secondary_image.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-collection.presets.name"
+    }
+  ]
+}
+{% endschema %}

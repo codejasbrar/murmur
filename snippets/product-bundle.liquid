@@ -1,0 +1,39 @@
+<div>
+
+  <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
+
+  {% comment %} variant options {% endcomment %}
+  <variant-selects-bundle>
+    {%- for option in product.options_with_values -%}
+      <div class="">
+        <label for="{{ product.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}">{{ option.name }}</label>
+        <div class="select">
+          <select id="{{ product.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}"
+            class="select__select {% if option.name == 'Size' %}hidden{% endif %}"
+            name="{{ product.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}"
+          >
+            {%- for value in option.values -%}
+              <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                {{ value }}
+              </option>
+            {%- endfor -%}
+          </select>
+          {%- if option.name == 'Size' -%}
+            <div class="options-size flex gap-4">
+              {%- for value in option.values -%}
+                <div class="bg-murmur-grey-light p-4 {% if option.selected_value == value %}selected{% endif %}">
+                  {{ value | escape }}
+                </div>
+              {%- endfor -%}
+            </div> 
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    <script type="application/json">
+      {{ product.variants | json }}
+    </script>
+
+  </variant-selects-bundle>
+</div>

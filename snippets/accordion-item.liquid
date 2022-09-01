@@ -1,0 +1,9 @@
+<div class="accordion-item {% if active %}active{%- endif -%}">
+  <div class="accordion-title">
+    {{- title -}}
+  </div>
+  <div class="accordion-detail {% if content_class %}{{ content_class }}{%- endif -%}">
+    {{- content -}}
+  </div>
+</div>
+

@@ -1,0 +1,107 @@
+.product-recommendations {
+  display: block;
+}
+
+.product-recommendations__heading {
+  margin: 0;
+  margin-bottom: 3rem;
+}
+
+.product-recommendations .card.card--product.card--outline {
+  border-radius: 0;
+}
+
+.product-recommendations .price--on-sale .price__sale {
+  justify-content: center;
+}
+
+.product-recommendations > ul.grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.product-recommendations .grid--quarter-max.grid--4-col-desktop .grid__item {
+  max-width: none;
+  width: calc(25% - 2rem);
+  padding: 0;
+}
+
+.product-recommendations .grid--2-col.product-grid.grid--3-col-tablet .grid__item {
+  max-width: none;
+  width: calc(33% - 2rem);
+  padding: 0;
+}
+
+.product-recommendations .card.card--product.card--outline .media {
+  margin: 0 auto;
+}
+
+/* --------------------------------------- */
+/* ------------ Mobile Styles ------------ */
+/* --------------------------------------- */
+
+@media screen and (max-width: 1024px) {
+  .product-recommendations .grid--quarter-max.grid--4-col-desktop .grid__item,
+  .product-recommendations .grid--2-col.product-grid.grid--3-col-tablet .grid__item {
+    max-width: none;
+    width: calc(50% - 2rem);
+    padding: 0;
+  }
+
+  .product-recommendations .card.card--product.card--outline .media {
+    width: 100%;
+    outline: none;
+  }
+
+  .product-recommendations .card.card--product.card--outline img {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .product-recommendations__heading {
+    font-size: 2.3rem;
+  }
+
+  .product-recommendations .price .price-item {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #706f73;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .product-recommendations .grid--quarter-max.grid--4-col-desktop .grid__item,
+  .product-recommendations .grid--2-col.product-grid.grid--3-col-tablet .grid__item {
+    flex: 0 1 100%;
+  }
+  .product-recommendations .card.card--product.card--outline .media {
+    width: 100%;
+    height: auto;
+    padding-bottom: 0 !important;
+  }
+
+  .product-recommendations .card.card--product.card--outline .media img {
+    display: block;
+    position: relative;
+    left: 0;
+    transform: none;
+    width: 100%;
+    height: auto;
+  }
+
+  .product-recommendations .product-form__input:last-of-type input[type='radio'] + label {
+    text-align: left;
+  }
+
+  .product-recommendations .card-wrapper h3 {
+    margin-top: 1rem;
+  }
+
+  .card-wrapper h3.h5.card-information__text {
+    text-align: left;
+  }
+
+  .product-recommendations .price--on-sale .price__sale {
+    justify-content: flex-start;
+  }
+}

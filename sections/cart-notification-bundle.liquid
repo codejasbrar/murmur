@@ -1,0 +1,19 @@
+{% comment %} This will be used if you only want to display just the bundle on the Cart Notification bubble rather than every single line item {% endcomment %}
+{% if false %}
+<div id="cart-notification-product-{{ product.id }}" class="cart-item">
+  {% if product.featured_image %}
+    <img class="cart-notification-product__image"
+      src="{{ product.featured_image | img_url: '140x' }}"
+      alt="{{ product.featured_image.alt | escape }}"
+      width="70"
+      height="{{ 70 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+      loading="lazy"
+    >
+  {% endif %}
+
+  <div>
+    <h3 class="cart-notification-product__name h4">{{ product.title | escape }}</h3>
+  </div>
+</div>
+{% endif %}
+

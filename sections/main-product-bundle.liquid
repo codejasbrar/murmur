@@ -1,0 +1,307 @@
+{% comment %}theme-check-disable TemplateLength{% endcomment %}
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-accordion.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-rte.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'product-bundle.css' | asset_url | stylesheet_tag }}
+{{ 'owl.carousel.min.css' | asset_url | stylesheet_tag }}
+{{ 'owl.theme.default.min.css' | asset_url | stylesheet_tag }}
+
+<link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<script src="{{ 'product-bundle.js' | asset_url }}" defer="defer"></script>
+
+<section class="page-width">
+  {% assign product_collection = product.collections.first %}
+  <div class="breadcrumb max-w-screen-xl mx-auto my-10 text-murmur-grey-dark">
+    <a href="/" class="text-murmur-grey-dark font-semibold">Home</a>&nbsp; {% if product_collection %}<span class="font-semibold">→</span> <span class="font-semibold">{{ product_collection.title | link_to: product_collection.url }}</span>&nbsp;{% endif %} <span class="font-semibold">→</span> <span>{{ product.title | escape }}</span>
+  </div>
+
+  <div class="product grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
+    <div class="grid__item product__media-wrapper" id="product_media_wrapper">
+
+      <slider-component class="slider-mobile-gutter">
+        <a class="skip-to-content-link button visually-hidden" href="#ProductInfo-{{ section.id }}">
+          {{ "accessibility.skip_to_product_info" | t }}
+        </a>
+
+        <div class="product-media-main">
+          <div class="product__media-list grid grid--peek list-unstyled slider slider--mobile" role="list">
+            <div class="product__media-item grid__item slider__slide --custom" data-media-id="">
+              <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="">
+                <span class="product__media-icon motion-reduce" aria-hidden="true">
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-plus" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.66724 7.93978C4.66655 7.66364 4.88984 7.43922 5.16598 7.43853L10.6996 7.42464C10.9758 7.42395 11.2002 7.64724 11.2009 7.92339C11.2016 8.19953 10.9783 8.42395 10.7021 8.42464L5.16849 8.43852C4.89235 8.43922 4.66793 8.21592 4.66724 7.93978Z" fill="currentColor"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.92576 4.66463C8.2019 4.66394 8.42632 4.88723 8.42702 5.16337L8.4409 10.697C8.44159 10.9732 8.2183 11.1976 7.94215 11.1983C7.66601 11.199 7.44159 10.9757 7.4409 10.6995L7.42702 5.16588C7.42633 4.88974 7.64962 4.66532 7.92576 4.66463Z" fill="currentColor"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8324 3.03011C10.1255 0.323296 5.73693 0.323296 3.03011 3.03011C0.323296 5.73693 0.323296 10.1256 3.03011 12.8324C5.73693 15.5392 10.1255 15.5392 12.8324 12.8324C15.5392 10.1256 15.5392 5.73693 12.8324 3.03011ZM2.32301 2.32301C5.42035 -0.774336 10.4421 -0.774336 13.5395 2.32301C16.6101 5.39361 16.6366 10.3556 13.619 13.4588L18.2473 18.0871C18.4426 18.2824 18.4426 18.599 18.2473 18.7943C18.0521 18.9895 17.7355 18.9895 17.5402 18.7943L12.8778 14.1318C9.76383 16.6223 5.20839 16.4249 2.32301 13.5395C-0.774335 10.4421 -0.774335 5.42035 2.32301 2.32301Z" fill="currentColor"></path>
+                </svg>
+              </span>
+
+                  <div class="product__media media media--transparent" style="padding-top: 100.0%;">
+                    <img srcset="" src="data:image/gif;base64,R0lGODlh7gLuAoAAAP///wAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4xLWMwMDAgNzkuYjBmOGJlOTAsIDIwMjEvMTIvMTUtMjE6MjU6MTUgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCAyMy4yIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkU5Q0ZFMjEwOUQ2ODExRUNCNEFDRUYzNzBGNkE0MzE3IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkU5Q0ZFMjExOUQ2ODExRUNCNEFDRUYzNzBGNkE0MzE3Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkE2MEI0NkI5RDU3MTFFQ0I0QUNFRjM3MEY2QTQzMTciIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkE2MEI0NkM5RDU3MTFFQ0I0QUNFRjM3MEY2QTQzMTciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4B//79/Pv6+fj39vX08/Lx8O/u7ezr6uno5+bl5OPi4eDf3t3c29rZ2NfW1dTT0tHQz87NzMvKycjHxsXEw8LBwL++vby7urm4t7a1tLOysbCvrq2sq6qpqKempaSjoqGgn56dnJuamZiXlpWUk5KRkI+OjYyLiomIh4aFhIOCgYB/fn18e3p5eHd2dXRzcnFwb25tbGtqaWhnZmVkY2JhYF9eXVxbWllYV1ZVVFNSUVBPTk1MS0pJSEdGRURDQkFAPz49PDs6OTg3NjU0MzIxMC8uLSwrKikoJyYlJCMiISAfHh0cGxoZGBcWFRQTEhEQDw4NDAsKCQgHBgUEAwIBAAAh+QQAAAAAACwAAAAA7gLuAgAC/4SPqcvtD6OctNqLs968+w+G4kiW5omm6sq27gvH8kzX9o3n+s73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Py+f0uv2Oz+v3/L7/DxgoOEhYaHiImKi4yNjo+AgZKTlJWWl5iZmpucnZ6fkJGio6SlpqeoqaqrrK2ur6ChsrO0tba3uLm6u7y9vr+wscLDxMXGx8jJysvMzc7PwMHS09TV1tfY2drb3N3e39DR4uPk5ebn6Onq6+zt7u/g4fLz9PX29/j5+vv8/f7/8PMKDAgQQLGjyIMKHChQwbOnwIMaLEiRQrWryIMaPGjf8cO3r8CDKkyJEkS5o8iTKlypUsW7p8CTOmzJk0a9q8iTOnzp08e/r8CTSo0KFEixo9ijSp0qVMmzp9CjWq1KlUq1q9ijWr1q1cu3r9Cjas2LFky5o9izat2rVs27p9Czeu3Ll069q9izev3r18+/r9Cziw4MGECxs+jDix4sWMGzt+DDmy5MmUK1u+jDmz5s2cO3v+DDq06NGkS5s+jTq16tWsW7t+DTu27Nm0a9u+jTu37t28e/v+DTy48OHEixs/jjy58uXMmzt/Dj269OnUq1u/jj279u3cu3v/Dj68+PHky5s/jz69+vXs27t/Dz++/Pn069u/jz+//v38+/v//w9ggAIOSGCBBh6IYIIKLshggw4+CGGEEk5IYYUWXohhhhpuyGGHHn4IYogijkhiiSaeiGKKKq7IYosuvghjjDLOSGONNt6IY4467shjjz7+CGSQQg5JZJFGHolkkkouyWSTTj4JZZRSTklllVZeiWWWWm7JZZdefglmmGKOSWaZZp6JZppqrslmm26+CWeccs5JZ5123olnnnruyWeffv4JaKCCDkpooYYeimiiii7KaKOOPgpppJJOSmmlll6Kaaaabsppp55+Cmqooo5Kaqmmnopqqqquymqrrr4Ka6yyzkprrbbeimuuuu7Ka6++/gpssMIOS2yxxh6LbLLK/y7LbLPOPgtttNJOS2211l6Lbbbabsttt95+C2644o5Lbrnmnotuuuquy2677r4Lb7zyzktvvfbei2+++u7Lb7/+/gtwwAIPTHDBBh+McMIKL8xwww4/DHHEEk9MccUWX4xxxhpvzHHHHn8Mcsgij0xyySafjHLKKq/McssuvwxzzDLPTHPNNt+Mc84678xzzz7/DHTQQg9NdNFGH4100kovzXTTTj8NddRST0111VZfjXXWWm/Ndddefw122GKPTXbZZp+Ndtpqr812226/DXfccs9Nd91234133nrvzXfffv8NeOCCD0544YYfjnjiii/OeOOOPw555JJPTnnllr9fjnnmmm/Oeeeefw566KKPTnrppp+Oeuqqr856666/Dnvsss9Oe+2234577rrvznvvvv8OfPDCD0988cYfj3zyyi/PfPPOPw999NJPT3311l+Pffbab899995/D3744o9Pfvnmn49++uqvz3777r8Pf/zyz09//fbfj3/++u/Pf//+/w/AAApwgAQsoAEPiMAEKnCBDGygAx8IwQhKcIIUrKAFL4jBDGpwgxzsoAc/CMIQinCEJCyhCU+IQlcUAAA7" sizes="(min-width: px) -64px, (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)" width="" height="" loading="lazy"  alt="">
+                  </div>
+                  <button class="product__media-toggle" type="button" aria-haspopup="dialog" data-media-id="">
+                    <span class="visually-hidden">Open media 1 in modal</span>
+                  </button>
+                </modal-opener>
+              </div>
+          </div>
+        </div><!-- end product-media-main -->
+
+        {% assign mediaLength = product.media.size %}
+        <div class="product__media-list {% if mediaLength > 5 %}owl-carousel owl-theme{% endif %} grid grid--peek list-unstyled slider slider--mobile --custom" role="list">
+          {%- assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' -%}
+          {%- if product.selected_or_first_available_variant.featured_media != null -%}
+            {%- assign media = product.selected_or_first_available_variant.featured_media -%}
+            <div class="product__media-item grid__item slider__slide{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+              {% render 'custom-product-thumbnail', media: media, position: 'featured', loop: section.settings.enable_video_looping, modal_id: section.id, xr_button: true %}
+            </div>
+          {%- endif -%}
+          {%- for media in product.media -%}
+            {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+              <div class="product__media-item grid__item slider__slide{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if section.settings.hide_variants and variant_images contains media.src %} product__media-item--variant{% endif %} --custom" data-media-id="{{ section.id }}-{{ media.id }}">
+                {% render 'custom-product-thumbnail', media: media, position: forloop.index, loop: section.settings.enable_video_looping, modal_id: section.id, xr_button: true %}
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+        {%- assign filtered_media_size = product.media.size | minus: variant_images.size | plus: 1 -%}
+        <div class="slider-buttons no-js-hidden{% if product.media.size < 2 or section.settings.hide_variants and filtered_media_size < 2 %} small-hide{% endif %}">
+          <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon-caret' %}</button>
+          <div class="slider-counter caption">
+            <span class="slider-counter--current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="visually-hidden">{{ 'accessibility.of' | t }}</span>
+            <span class="slider-counter--total">{% if section.settings.hide_variants %}{{ filtered_media_size }}{% else %}{{ product.media.size }}{% endif %}</span>
+          </div>
+          <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon-caret' %}</button>
+        </div>
+      </slider-component>
+      
+      
+      <div class="accordion" id="product_accordion">
+        {%- comment -%}Product Details{%- endcomment -%}
+        {% render 'accordion-product-details', product: product %}
+
+        {%- comment -%}Size Guide{%- endcomment -%}
+        {%- if product.metafields.my_fields.size_guide -%}
+          {% render 'accordion-item', title: 'Size Guide', content: product.metafields.my_fields.size_guide, content_class: 'whitespace-pre' %}
+        {%- endif -%}
+
+        {%- comment -%}Delivery & Returns{%- endcomment -%}
+        {%- assign page_delivery_returns = pages['accordion-delivery-returns'].content -%}
+        {% render 'accordion-item', title: 'Delivery & Returns', content: page_delivery_returns %}
+      </div>
+      
+    </div>
+    
+    <div class="product__info-wrapper grid__item relative" id="product_info_wrapper">
+      <div id="ProductInfo-{{ section.id }}" class="product__info-container{% if section.settings.enable_sticky_info %} product__info-container--sticky{% endif %}">
+      <div>
+        <h1 class="text-4xl font-normal mb-0 bundle-title">{{ product.title | escape }}</h1>
+        <div class="bundle-discount-value hidden" aria-hidden="true">{{ product.metafields.my_fields.bundle_discount }}</div>
+        <div class="flex items-center">
+          <h3 class="text-lg original-price line-through opacity-50 mr-4">£</h3>
+          <h3 class="text-xl bundle-price">£</h3>
+        </div>
+      </div>
+
+     
+
+      {% comment %} Error Message {% endcomment %}
+      <error-message id="error-message" class="bg-red-500 text-white p-8 rounded-lg mb-8 hidden">
+        <h4 class="font-semibold text-lg my-4">Error Message</h4>
+        <p></p>
+      </error-message>
+
+      {%- for product_handle in product.tags -%}
+        {%- assign productBundle = all_products[product_handle] -%}
+        <div class="product-bundle-container {% if forloop.index0 == 0 %}open{% endif %} bg-murmur-grey-warm p-4 rounded-lg mb-4">
+
+          <div class="product-bundle-container-title flex items-center gap-4">
+            <span class=" bg-white text-murmur-grey-dark font-semibold p-8 rounded-full w-8 h-8 inline-flex items-center justify-center">{{ forloop.index }}</span>
+            <h3 class="font-semibold text-lg mb-0" {{ block.shopify_attributes }}>{{ productBundle.title | escape }} <br> {%- for option in productBundle.options_with_values -%}<span class="load_variant load_variant_{{ forloop.index0 }}">{% for value in option.values %}{% if option.selected_value == value %}{{ value}}{% endif %}{%- endfor -%} </span>{% if forloop.index0 == 0 %}<span class="load_variant">,&nbsp;</span>{% endif %}{%- endfor -%}</h1>
+            <div class="arrow-down ml-auto">
+              {% render 'icon-arrow-down' %}
+            </div>
+          </div>
+        
+          {% comment %} variant options {% endcomment %}
+          <variant-selects-bundle class="block">
+            {%- for option in productBundle.options_with_values -%}
+              <div class="{% if forloop.last %}mb-4 {% else %}mb-16 {% endif %}last-of-type:mb-0">
+                <label class="text-body font-semibold" for="{{ productBundle.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}">Choose your {{ option.name | downcase }}</label>
+              {% assign size_var = option.name | downcase %}
+           {% if size_var =="size" %}
+          <a href="javascript:void(0);" class="size_guide">Size Guide</a>
+           {% endif %}
+                <div class="select pt-4">
+                  <select id="{{ productBundle.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}"
+                    class="select__select {% if option.name == 'Size' or option.name == 'Colour' or option.name == 'Color' %}hidden{% endif %} border-0 text-body appearance-none bg-white text-murmur-grey-dark"
+                    name="{{ productBundle.title | replace: " ", "-" | downcase }}--option-{{ option.name | downcase }}"
+                  >
+                    {%- for value in option.values -%}
+                      <option value="{{- value | escape -}}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{- value | escape -}}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  {%- if option.name == 'Size' -%}
+                   {% render 'product-variant-size', option: option %}
+                  {%- endif -%}
+                  {%- if option.name == 'Colour' or option.name == 'Color' -%}
+                    {% render 'product-variant-colour', option: option %}
+                   {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+        <div class="next_action"><a class="next_btn" javascript:void(0);>Confirm Selection</a></div>
+            <script type="application/json">
+              {{ productBundle.variants | json }}
+            </script>
+        
+          </variant-selects-bundle>
+           
+        </div>
+        
+      {%- endfor -%}
+    
+      <button id="buy-bundle-button" class="bg-murmur-grey-dark text-white p-8 w-full mt-8 text-xl font-semibold rounded-lg">Add to cart <span class="btn_price">({{ product.price | money }})</span></button>
+     {%- if product.description != blank -%}
+        <div class="product__description rte mb-8">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+
+  <product-modal id="ProductModal-{{ section.id }}" class="product-media-modal media-modal">
+    <div class="product-media-modal__dialog" role="dialog" aria-label="{{ 'products.modal.label' | t }}" aria-modal="true" tabindex="-1">
+      <button id="ModalClose-{{ section.id }}" type="button" class="product-media-modal__toggle" aria-label="{{ 'accessibility.close' | t }}">{% render 'icon-close' %}</button>
+
+      <div class="product-media-modal__content" role="document" aria-label="{{ 'products.modal.label' | t }}" tabindex="0">
+        <div class="placeholder-loader --media"></div>
+        {%- liquid
+          if product.selected_or_first_available_variant.featured_media != null
+            assign media = product.selected_or_first_available_variant.featured_media
+            render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants
+          endif
+        -%}
+
+        {%- for media in product.media -%}
+          {%- liquid
+            if section.settings.hide_variants and variant_images contains media.src
+              assign variant_image = true
+            else
+              assign variant_image = false
+            endif
+
+            unless media.id == product.selected_or_first_available_variant.featured_media.id
+              render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: variant_image
+            endunless
+          -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </product-modal>
+
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
+
+<script src="{{ 'owl.carousel.min.js' | asset_url }}" defer></script>
+<script src="{{ 'product-shared.js' | asset_url }}" defer></script>
+<script>
+  $(document).on("click",".next_btn",function(){
+  $(this).parents(".product-bundle-container").removeClass("open");
+  $(this).parents(".product-bundle-container").next(".product-bundle-container").eq(0).trigger("click");
+    var ddtss = $(this).parents(".product-bundle-container").next(".product-bundle-container");
+console.log("ddtss",ddtss);
+});
+</script>
+{% javascript %}
+class ProductModal extends ModalDialog {
+  constructor() {
+    super();
+  }
+
+  hide() {
+    super.hide();
+  }
+
+  show(opener) {
+    super.show(opener);
+    this.showActiveMedia();
+  }
+
+  showActiveMedia() {
+
+    this.querySelectorAll(`[data-media-id]:not([data-media-id="${this.openedBy.getAttribute("data-media-id")}"])`).forEach((element) => {
+        element.classList.remove('active');
+      }
+    )
+    const activeMedia = this.querySelector(`[data-media-id="${this.openedBy.getAttribute("data-media-id")}"]`);
+
+    const elements = this.querySelectorAll('[data-media-id]')
+
+    elements.forEach(element => console.log(element.dataset.mediaId, this.openedBy.dataset.mediaId))
+
+    const activeMediaTemplate = activeMedia.querySelector('template');
+    const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
+    activeMedia.classList.add('active');
+    activeMedia.scrollIntoView();
+
+    const container = this.querySelector('[role="document"]');
+    container.scrollLeft = (activeMedia.width - container.clientWidth) / 2;
+
+    if (activeMedia.nodeName == 'DEFERRED-MEDIA' && activeMediaContent && activeMediaContent.querySelector('.js-youtube'))
+      activeMedia.loadContent();
+  }
+}
+
+customElements.define('product-modal', ProductModal);
+{% endjavascript %}
+
+{%- liquid
+    assign seo_media = product.featured_media
+-%}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ shop.url | append: product.url | json }},
+    {% if seo_media -%}
+      {%- assign media_size = seo_media.preview_image.width | append: 'x' -%}
+      "image": [
+        {{ seo_media | img_url: media_size | prepend: "https:" | json }}
+      ],
+    {%- endif %}
+    "description": {{ product.description | strip_html | json }},
+    "brand": {
+      "@type": "Thing",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": [
+      {%- for product_handle in product.tags -%}
+        {%- assign productBundleItem = all_products[product_handle] -%}
+        {
+          "@type" : "Offer",
+          "availability" : "http://schema.org/{% if productBundleItem.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ productBundleItem.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ shop.url | append: productBundleItem.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+
+  
+
+</script>

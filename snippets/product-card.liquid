@@ -1,0 +1,210 @@
+{% comment %}
+    Renders a product card
+
+    Accepts:
+    - product_card_product: {Object} Product Liquid object (optional)
+    - media_size: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+    - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+    - add_image_padding: {Boolean} Enables padding on the image to space out the grid
+    - show_vendor: {Boolean} Show the product vendor. Default: false
+    - show_image_outline: {Boolean} Show card outline. Default: true (optional)
+    - show_rating: {Boolean} Show the product rating. Default: false
+
+    Usage:
+    {% render 'product-card', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+<a href="{{ product_card_product.url | default: '#' }}" class="card-wrapper lg:min-h-product-card" data-is-bundle="{%- if product_card_product.metafields.my_fields.bundle_discount -%}true{%- endif -%}" data-price-min="" data-price-max="">
+
+  {%- comment -%}
+  Bestseller, Sale, New tags
+  {%- endcomment -%}
+  <div class="absolute top-4 left-4 z-10 flex gap-4">
+    {% for tag in product_card_product.tags %}
+      {% if tag == 'Bestseller' or tag == 'New' %}
+        <div class="bg-murmur-grey-dark text-white rounded-xl py-2 px-4">
+          {{- tag -}}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="card-information">
+    <div class="card-information__wrapper">
+
+
+      <h3 class="lg:text-center text-large">
+        <span class="lg:text-large font-semibold text-murmur-grey-dark">
+          {{ product_card_product.title | escape }}
+        </span>
+      </h3>
+
+
+      {% comment %} TODO: metafield {% endcomment %}
+      {% comment %} <span class="caption-large light">{{ block.settings.description | escape }}</span>
+      {%- if show_rating and product_card_product.metafields.reviews.rating.value != blank -%}
+        {% liquid
+          assign rating_decimal = 0 
+          assign decimal = product_card_product.metafields.reviews.rating.value.rating | modulo: 1 
+          if decimal >= 0.3 and decimal <= 0.7
+            assign rating_decimal = 0.5
+          elsif decimal > 0.7
+            assign rating_decimal = 1
+          endif 
+        %}
+        <div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product_card_product.metafields.reviews.rating.value, rating_max: product_card_product.metafields.reviews.rating.value.scale_max }}">
+          <span aria-hidden="true" class="rating-star color-icon-{{ settings.accent_icons }}" style="--rating: {{ product_card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product_card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
+        </div>
+        <p class="rating-text caption">
+          <span aria-hidden="true">{{ product_card_product.metafields.reviews.rating.value }} / {{ product_card_product.metafields.reviews.rating.value.scale_max }}</span>
+        </p>
+        <p class="rating-count caption">
+          <span aria-hidden="true">({{ product_card_product.metafields.reviews.rating_count }})</span>
+          <span class="visually-hidden">{{ product_card_product.metafields.reviews.rating_count }} {{ "accessibility.total_reviews" | t }}</span>
+        </p>
+      {%- endif -%} {% endcomment %}
+
+      {%- comment -%}Debugging:{%- endcomment -%}
+      {% if false %}
+      <pre>
+        {%- if product_card_product.metafields.my_fields.bundle_discount -%}
+          
+          {%- for product_handle in product_card_product.tags -%}
+            
+            {%- assign bundle_product = all_products[product_handle] -%}
+
+            <div data-bundle-product-price-min="{{- bundle_product.price_min -}}" data-bundle-product-price-max="{{- bundle_product.price_max -}}">
+              {{- bundle_product.title -}}              
+            </div>
+          {%- endfor -%}
+
+        {%- else -%}
+          
+        {%- endif -%}
+      </pre>
+      {% endif %}
+      
+      
+      {%- if product_card_product.metafields.my_fields.bundle_discount -%}
+        <div class="flex justify-center price">
+          <span class="font-semibold text-center">{{ product_card_product.price | money }}</span>
+        </div>
+      {%- else -%}
+        {%- if product_card_product.metafields.my_fields.product_helper_1 -%}
+          {% assign productMetafields1 = all_products[product_card_product.metafields.my_fields.product_helper_1] %}
+          {% assign productMetafields2 = all_products[product_card_product.metafields.my_fields.product_helper_2] %}
+          {% assign productMetafields3 = all_products[product_card_product.metafields.my_fields.product_helper_3] %}
+          {% assign productMetafields4 = all_products[product_card_product.metafields.my_fields.product_helper_4] %}
+          {% assign productMetafields5 = all_products[product_card_product.metafields.my_fields.product_helper_5] %}
+          <div data-prices='["{{productMetafields1.price}}"{%- if productMetafields2.price != '' -%},"{{productMetafields2.price}}"{%- endif -%}{%- if productMetafields3.price != '' -%},"{{productMetafields3.price}}"{%- endif -%}{%- if productMetafields4.price != '' -%},"{{productMetafields4.price}}"{%- endif -%}{%- if productMetafields5.price != '' -%},"{{productMetafields5.price}}"{%- endif -%}]'>
+          </div>
+
+          <p class="calculated-from-price price lg:justify-center font-semibold text-murmur-grey-dark text-center"></p>
+          
+        {%- else -%}
+          {% render 'price', product: product_card_product, price_class: 'lg:justify-center font-semibold text-murmur-grey-dark' %} 
+        {%- endif -%}
+      
+
+      {%- endif -%}
+      <div class="offer_label">{{ offer_label }}</div>
+    </div>
+  </div>
+
+  <div class="card card--product{% if product_card_product.featured_media == nil %} card--text-only bg-murmur-grey-light{% endif %}{% if product_card_product.featured_media != nil and show_image_outline %} card--outline{% endif %} rounded-xl" tabindex="-1">
+    <div class="card__inner">
+      {%- if product_card_product.featured_media -%}
+        {%- liquid
+          assign featured_media_aspect_ratio = product_card_product.featured_media.aspect_ratio
+
+          if product_card_product.featured_media.aspect_ratio == nil
+            assign featured_media_aspect_ratio = 1
+          endif
+        -%}
+
+        <div{% if add_image_padding %} class="card__media-full-spacer"{% endif %}>
+          <div class="media media--transparent media--{{ media_size }} media--hover-effect"
+            {% if media_size == 'adapt' and product_card_product.featured_media %} style="padding-bottom: {{ 1 | divided_by: featured_media_aspect_ratio | times: 100 }}%;"{% endif %}
+          >
+            <img
+              srcset="{%- if product_card_product.featured_media.width >= 165 -%}{{ product_card_product.featured_media | img_url: '165x' }} 165w,{%- endif -%}
+                {%- if product_card_product.featured_media.width >= 360 -%}{{ product_card_product.featured_media | img_url: '360x' }} 360w,{%- endif -%}
+                {%- if product_card_product.featured_media.width >= 533 -%}{{ product_card_product.featured_media | img_url: '533x' }} 533w,{%- endif -%}
+                {%- if product_card_product.featured_media.width >= 720 -%}{{ product_card_product.featured_media | img_url: '720x' }} 720w,{%- endif -%}
+                {%- if product_card_product.featured_media.width >= 940 -%}{{ product_card_product.featured_media | img_url: '940x' }} 940w,{%- endif -%}
+                {%- if product_card_product.featured_media.width >= 1066 -%}{{ product_card_product.featured_media | img_url: '1066x' }} 1066w,{%- endif -%}
+                {{ product_card_product.featured_media | img_url: 'master' }} {{ product_card_product.featured_media.width }}w"
+              src="{{ product_card_product.featured_media | img_url: '533x' }}"
+              sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+              alt="{{ product_card_product.featured_media.alt | escape }}"
+              loading="lazy"
+              class="motion-reduce"
+              width="{{ product_card_product.featured_media.width }}"
+              height="{{ product_card_product.featured_media.height }}"
+            >
+
+            {%- if product_card_product.media[1] != nil and show_secondary_image -%}
+              <img
+                srcset="{%- if product_card_product.media[1].width >= 165 -%}{{ product_card_product.media[1] | img_url: '165x' }} 165w,{%- endif -%}
+                  {%- if product_card_product.media[1].width >= 360 -%}{{ product_card_product.media[1] | img_url: '360x' }} 360w,{%- endif -%}
+                  {%- if product_card_product.media[1].width >= 533 -%}{{ product_card_product.media[1] | img_url: '533x' }} 533w,{%- endif -%}
+                  {%- if product_card_product.media[1].width >= 720 -%}{{ product_card_product.media[1] | img_url: '720x' }} 720w,{%- endif -%}
+                  {%- if product_card_product.media[1].width >= 940 -%}{{ product_card_product.media[1] | img_url: '940x' }} 940w,{%- endif -%}
+                  {%- if product_card_product.media[1].width >= 1066 -%}{{ product_card_product.media[1] | img_url: '1066x' }} 1066w,{%- endif -%}
+                  {{ product_card_product.media[1] | img_url: 'master' }} {{ product_card_product.media[1].width }}w"
+                src="{{ product_card_product.media[1] | img_url: '533x' }}"
+                sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+                alt="{{ product_card_product.media[1].alt | escape }}"
+                loading="lazy"
+                class="motion-reduce"
+              width="{{ product_card_product.media[1].width }}"
+              height="{{ product_card_product.media[1].height }}"
+              >
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        {% comment %} <div class="card__content">
+          <h2 class="card__text h3 text-center">
+            <a href="{{ product_card_product.url | default: '#' }}" class="lg:text-large font-semibold">
+              {{ product_card_product.title }}
+            </a>
+          </h2>
+        </div> {% endcomment %}
+      {%- endif -%}
+
+      {% comment %} <div class="card__badge">
+        {%- if product_card_product.available == false -%}
+          <span class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif product_card_product.compare_at_price > product_card_product.price and product_card_product.available -%}
+          <span class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}">{{ 'products.product.on_sale' | t }}</span>
+        {%- endif -%}
+      </div> {% endcomment %}
+    </div>
+  </div>
+</a>
+   <div class="product_swatch">
+    {% for option in product_card_product.options %}    
+     {% if option == "Color" or option == "Colour"  %}
+        {% assign index = forloop.index0 %}
+        {% assign color_lists = '' %}
+        {% assign color = '' %}
+{% for variant in product_card_product.variants %}
+      {% capture color %}
+        {{ variant.options[index] }}
+      {% endcapture %}
+{% unless colorlist contains color %}
+  
+  <a href="{{ variant.url }}" class="colour-swatch colour-swatch-{{ color | downcase | strip }}" title="{{ color | downcase | strip }}"></a>
+
+       {% capture tempList %}
+          {{colorlist | append: color | append: ' '}}
+        {% endcapture %}
+        {% assign colorlist = tempList %}
+      {% endunless %}
+  {% endfor %}
+      {% endif %}
+    {% endfor %}
+    </div>

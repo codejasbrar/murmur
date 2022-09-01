@@ -1,0 +1,110 @@
+.product-bundle-container {
+  cursor: pointer;
+  padding: 15px 35px;
+  background-color: transparent;
+  border: 1px solid #F3F3F3;
+}
+.product-bundle-container.open {
+    background-color: #F3F3F3;
+}
+.product-bundle-container variant-selects-bundle {
+  display: none;
+  margin-top: 4rem;
+}
+
+.product-bundle-container.open > .product-bundle-container-title > .arrow-down {
+  transform: rotate(-180deg);
+}
+
+.product-bundle-container.open variant-selects-bundle {
+  display: block;
+}
+
+.product-bundle-container.open variant-selects-bundle {
+  display: block;
+  position: relative;
+}
+
+.options button {
+  border: 2px solid white;
+}
+
+.options button:hover {
+  border-color: #706F73;
+}
+
+.options button.selected {
+  border: 2px solid #000;
+}
+
+.options.options-size button .icon-question {
+  opacity: 0;
+  position: absolute;
+  bottom: -12px;
+}
+.next_action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+span.btn_price {
+    margin-left: 15px;
+}
+.next_btn {
+    border: 1px solid;
+    padding: 5px 20px;
+    border-radius: 25px;
+    opacity: 0.5;
+    display: inherit;
+}
+.next_btn:hover {
+    opacity: 1;
+}
+span.load_variant {
+    color: #bfbec0;
+    font-weight: 300;
+    margin-left: 0;
+    display: inline-block;
+}
+a.size_guide {
+    float: right;
+}
+@media screen and (max-width: 1024px) {
+  .options.options-size button .icon-question {
+    bottom: -10px;
+  }
+}
+
+.options.options-size button.selected .icon-question {
+  opacity: 100;
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: #706F73;
+}
+
+.options.options-colour button .icon-question {
+  opacity: 0;
+}
+
+.options.options-colour button.selected .icon-question {
+  opacity: 100;
+}
+
+.options.options-colour button.disabled {
+  opacity: 25%;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg width='35' height='35' viewBox='0 0 35 35' fill='none' xmlns='http://www.w3.org/2000/svg'><line x1='33.7071' y1='0.707107' x2='0.707107' y2='33.7071' stroke='white' stroke-width='3'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+}
+@media screen and (max-width:768px){
+  .next_action {
+    position: relative;
+  }
+}
+
+
+.options-colour button.selected svg {
+    opacity: 0;
+}

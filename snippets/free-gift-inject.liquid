@@ -1,0 +1,131 @@
+{% assign free_gift_over_price_40 = settings.gift_total_amount %} 
+{% assign variant_id = settings.gift_product_id %}
+<div id="gift_product_is"></div>
+  
+<script>
+  jQuery(document).ready(function(){
+    var cartItems = {{ cart.items | json }},
+        qtyInTheCart = 0,
+          qtyInTheCart_price = 0,
+          cartUpdates = [],
+          reloads = false,
+    variant_id = {{ variant_id }},
+    cartTotal = {{ cart.original_total_price }};
+    
+    for (var i=0; i<cartItems.length; i++) {
+      if (cartItems[i].id === {{ variant_id }} ) {
+          qtyInTheCart = cartItems[i].quantity;
+          qtyInTheCart_price = cartItems[i].final_price;
+          console.log(cartItems[i]);
+          break;
+          }
+          }
+      var free_gift_reduce_total = cartTotal - qtyInTheCart_price;
+          console.log("cartTotal",cartTotal);
+          console.log("qtyInTheCart_price",qtyInTheCart_price);
+          // console.log("free_gift_reduce_total",free_gift_reduce_total);
+      if (( qtyInTheCart > 0 ) && (cartTotal < {{ free_gift_over_price_40 }}  ) ) {
+//           if(cartItems.length <= 1){
+        	// cartUpdates =  "updates["+variant_id+"]=0";
+          	reloads = false;
+//       		}
+          }else if (( cartItems.length >= 1 ) && (qtyInTheCart < 1) && (cartTotal >= {{ free_gift_over_price_40 }} )){
+        cartUpdates =  "updates["+variant_id+"]=1";
+        reloads = true;
+      }else {
+        return;
+      }
+      console.log(cartUpdates);
+
+      $.ajax({
+        type: 'POST',
+        url: "/cart/update.js",
+        data: cartUpdates,
+        beforeSend: function() {
+          $(".loader1").addClass('show');
+        },
+        success: function(data) {
+          $("#shopify-section-template--15663570714784__cart-items").load(location.href + " #shopify-section-template--15663570714784__cart-items");
+          $("#order-summary").load(location.href + " #order-summary");
+setTimeout(function(){
+          if(reloads){
+                        $("#cart-errors").css('display','flex');
+            $('#cart-errors').html("<div class='block-content'><b>Gift Product Added</b><p>You are eligible to Gift Product!</p><a href='javascript:void(0)' class='close'>Close</a></div>");          
+          }
+          },1000);
+        },
+        error: function(xhr) { 
+          console.log("Error occured.please try again");
+        },
+        complete: function() {
+          $(".loader1").removeClass('show');			
+        }
+      });
+});
+</script>
+<style>
+
+  .loader1 {
+    font-size:0px;
+    padding:0px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 0;
+    bottom: 0;
+    display: done;
+    align-items: center;
+    justify-content: center;
+  }
+  .loader1.show{
+    display: flex;
+  }  
+  .loader1 span {
+    vertical-align:middle;
+    border-radius:100%;
+
+    display:inline-block;
+    width:20px;
+    height:20px;
+    margin:3px 2px;
+    -webkit-animation:loader1 0.8s linear infinite alternate;
+    animation:loader1 0.8s linear infinite alternate;
+  }
+  .loader1 span:nth-child(1) {
+    -webkit-animation-delay:-1s;
+    animation-delay:-1s;
+    background:rgba(245, 103, 115,0.6);
+  }
+  .loader1 span:nth-child(2) {
+    -webkit-animation-delay:-0.8s;
+    animation-delay:-0.8s;
+    background:rgba(245, 103, 115,0.8);
+  }
+  .loader1 span:nth-child(3) {
+    -webkit-animation-delay:-0.26666s;
+    animation-delay:-0.26666s;
+    background:rgba(245, 103, 115,1);
+  }
+  .loader1 span:nth-child(4) {
+    -webkit-animation-delay:-0.8s;
+    animation-delay:-0.8s;
+    background:rgba(245, 103, 115,0.8);
+
+  }
+  .loader1 span:nth-child(5) {
+    -webkit-animation-delay:-1s;
+    animation-delay:-1s;
+    background:rgba(245, 103, 115,0.4);
+  }
+
+  @keyframes loader1 {
+    from {transform: scale(0, 0);}
+    to {transform: scale(1, 1);}
+  }
+  @-webkit-keyframes loader1 {
+    from {-webkit-transform: scale(0, 0);}
+    to {-webkit-transform: scale(1, 1);}
+  }
+
+</style>

@@ -1,0 +1,23 @@
+<div class="options options-size flex flex-col lg:flex-row gap-8 lg:gap-4">
+  {%- for value in option.values -%}
+    <button class="flex flex-col lg:gap-4 items-center p-8 bg-white rounded-lg cursor-pointer cursor transition scale-100 lg:hover:scale-110 {% if option.selected_value == value %}selected{% endif %}">
+      <div class="mb-4">
+        {%- liquid 
+          case value | escape 
+            when 'Single'
+              render 'icon-size-single'
+            when 'Double'
+              render 'icon-size-double'
+            when 'King'
+              render 'icon-size-king'
+            when 'Super King'
+              render 'icon-size-superking'
+            else 
+          endcase
+        -%}
+      </div>
+      <span>{{- value | escape -}}</span>
+      <div class="icon-question {% if option.selected_value == value %}selected{% endif %}">{% render 'icon-question' %}</div>
+    </button>
+  {%- endfor -%}
+</div>

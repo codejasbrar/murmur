@@ -1,0 +1,8 @@
+<div class="options options-colour flex gap-4">
+  {%- for value in option.values -%}
+    <button class="vv1 flex p-4 rounded-full cursor-pointer cursor transition {% if option.selected_value == value %}selected{% endif %} csColor colour-swatch-{{ value | downcase | replace: " ", "-" }}" data-type="colour" title="{{ value }}">
+      <div class="icon-question {% if option.selected_value == value %}selected{% endif %}">{% render 'icon-question' %}</div>
+      <span class="hidden">{{- value | escape -}}</span>
+    </button>
+  {%- endfor -%}
+</div>

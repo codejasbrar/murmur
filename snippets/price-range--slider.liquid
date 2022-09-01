@@ -1,0 +1,59 @@
+
+<style>
+.sliderrRangeContent .slidecontainer {
+  width: 100%;
+}
+
+.sliderrRangeContent  .sliderr {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.sliderrRangeContent  .sliderr:hover {
+  opacity: 1;
+}
+
+.sliderrRangeContent .sliderr::-webkit-sliderr-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.sliderrRangeContent  .sliderr::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+</style>
+
+
+<div class="sliderrRangeContent">
+<div class="slidecontainer">
+  <input type="range" min="0" max="1000" value="1000" class="sliderr" id="myRange">
+  <p style="display:none;"><span id="demo"></span></p>
+</div>
+</div>
+<script>
+var sliderr = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = sliderr.value;
+
+sliderr.oninput = function() {
+  output.innerHTML = this.value;
+    $("#Filter-Price-LTE").val(output.innerHTML);
+}
+</script>
+

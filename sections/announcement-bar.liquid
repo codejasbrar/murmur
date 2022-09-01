@@ -1,0 +1,129 @@
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when 'announcement' -%}
+      {%- if block.settings.link != blank -%}
+        <a href="{{ block.settings.link }}" class="">
+      {%- endif -%}
+          <div class="announcement-bar flex items-center justify-center py-2 lg:py-3 text-tiny lg:text-body {{ block.settings.color_scheme }}" role="region" aria-label="{{ 'sections.header.announcement' | t }}" {{ block.shopify_attributes }}>
+
+              {%- if forloop.first and block.settings.text_left != blank -%}
+                <div class="hidden lg:block lg:w-1/3 text-center">
+                  {%- if block.settings.text_left_link != blank -%}
+                    <a href="{{ block.settings.text_left_link }}">
+                  {%- endif -%}
+                    {{- block.settings.text_left | escape -}}
+                  {%- if block.settings.text_left_Link != blank -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.text_center != blank -%}
+                <div class="lg:w-1/3 text-center">
+                  {%- if block.settings.text_center_link != blank -%}
+                    <a href="{{ block.settings.text_center_link }}">
+                  {%- endif -%}
+                    {{- block.settings.text_center | escape -}}
+                  {%- if block.settings.text_center_link != blank -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- comment -%}Only display Trustpilot reviews embed on first announcement bar{%- endcomment -%}
+              
+              {% if forloop.first %}
+
+              <div class="hidden lg:w-1/3 text-center">
+
+                <!-- TrustBox widget - Micro TrustScore -->
+                <div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b637fa0340045cd0c936" data-businessunit-id="4d94457300006400050f4fa6" data-style-height="20px" data-style-width="100%" data-theme="light">
+                  <a href="https://uk.trustpilot.com/review/www.bedeckhome.com" target="_blank" rel="noopener">Trustpilot</a>
+                </div>
+                <!-- End TrustBox widget -->
+  
+              </div>
+            {% endif%}
+              
+          </div>
+      {%- if block.settings.link != blank -%}
+        </a>
+      {%- endif -%}
+  {%- endcase -%}
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Note: Second or third announcement bar would only display the Text Center field."
+        },
+        {
+          "type": "text",
+          "id": "text_left",
+          "default": "Hassle-free returns",
+          "label": "Text Left"
+        },
+        {
+          "type": "url",
+          "id": "text_left_link",
+          "label": "Text Left Link"
+        },
+        {
+          "type": "text",
+          "id": "text_center",
+          "default": "Free UK delivery on orders over £50",
+          "label": "Text Center"
+        },
+        {
+          "type": "url",
+          "id": "text_center_link",
+          "label": "Text Center Link"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "options": [
+            {
+              "value": "bg-murmur-grey-light text-murmur-grey-dark",
+              "label": "Light Grey"
+            },
+            {
+              "value": "bg-murmur-grey-dark text-white",
+              "label": "Dark Grey"
+            },
+            {
+              "value": "bg-white text-black",
+              "label": "White"
+            },
+            {
+              "value": "bg-black text-white",
+              "label": "Black"
+            }
+          ],
+          "default": "bg-murmur-grey-light text-murmur-grey-dark",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.color_scheme.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+<a href="{{ collection.metafields.my_fields.promotional_banner_cta }}" class="hidden lg:block h-promotional-banner w-full bg-cover bg-center" style="background-image: url('{{ banner | image_url: width: 1024 }}')">
+  <div class="p-10 relative h-full">
+    {%- if collection.metafields.my_fields.promotional_banner_subtitle != blank or collection.metafields.my_fields.promotional_banner_title != blank -%}
+      <div class="absolute bottom-10">
+        <span class="text-murmur-grey-warm font-semibold text-body">{{ collection.metafields.my_fields.promotional_banner_subtitle }}</span><br/>
+        <span class="text-white font-bold text-heading-level-3">{{ collection.metafields.my_fields.promotional_banner_title }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+</a>

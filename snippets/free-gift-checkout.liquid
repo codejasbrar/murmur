@@ -1,0 +1,213 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"></script>
+<style>
+[data-order-summary-section="line-items"] {
+  display: flex; 
+  flex-direction: column;
+} 
+</style>
+{% assign free_gift_over_price_40 = settings.gift_total_amount %} 
+{% assign variant_id = settings.gift_product_id %}
+
+<div class="data" style="display:none;" data-cart="{{ cart.items | json }}">
+<span class="taxAmount">{{ checkout.tax_price | money_without_currency | remove: ',' }}</span>
+<span class="grandTotal">{{ checkout.total_price | money_without_currency | remove: ',' }}</span>
+<span class="currency">{{ shop.currency }}</span>
+{{ checkout.cart_level_discount_applications | json }}
+{% for line_item in checkout.line_items %}
+{{line_item | json}}
+      <div class="lineItem" data-final_line_price="{{ line_item.final_line_price }}" data-line_items_subtotal_price="{{ line_item.subtotal_price }}" id="lineitem_{{line_item.variant_id}}">
+        <span class="name">{{ line_item.product.title }}</span>
+        <span class="sku">{{ line_item.sku }}</span>
+        <span class="variant">{{line_item.variant_id}}</span>
+        <span class="quantity">{{ line_item.quantity }}</span>
+        <span class="unitPrice">{{ line_item.price | money_without_currency | remove: ',' }}</span>
+        <span class="salePrice">{{ line_item.price | money_without_currency | remove: ',' }}</span>
+        <span class="totalPrice">{{ line_item.price | times: line_item.quantity | money_without_currency | remove: ',' }}</span>
+        <span class="imageUrl">{{ line_item.image | image_url }}</span>
+      </div>
+{% endfor %}
+</div>
+
+<script>
+  
+    var qtyInTheCart = 0,
+        qtyInTheCart_price = 0,
+        cartUpdates = [],
+        reloads = false;
+  variant_id = {{ variant_id }};
+  cartTotal = {{ checkout.total_price }};
+  var cartItem_price = $('#lineitem_{{variant_id}}').find('.totalPrice').text();
+  var cartItem_variant = $('#lineitem_{{variant_id}}').find('.variant').text();
+  var cartItem_quantity = $('#lineitem_{{variant_id}}').find('.quantity').text();
+ var table_tr = $('.product-table').find("[data-variant-id='"+cartItem_variant+"']").css("order",1);
+
+        if (cartItem_variant == {{ variant_id }} ) {
+        qtyInTheCart = cartItem_quantity;
+        qtyInTheCart_price = cartItem_price;
+        }
+        
+    var free_gift_reduce_total = cartTotal - qtyInTheCart_price;
+    if (( qtyInTheCart > 0 ) && (cartTotal < {{ free_gift_over_price_40 }}  ) ) {
+        //if({{checkout.line_items.size}} > 1){
+           //cartUpdates =  "updates["+variant_id+"]=0";
+          reloads = true;
+          //}
+        }else if (( {{checkout.line_items.size}} >= 1 ) && (qtyInTheCart < 1) && (cartTotal >= {{ free_gift_over_price_40 }} )){
+      cartUpdates =  "updates["+variant_id+"]=1";
+      reloads = false;
+    }
+            
+    $.ajax({
+      type: 'POST',
+      url: "/cart/update.js",
+      data: cartUpdates,
+      beforeSend: function() {
+        // setting a timeout
+        $(".loader1").addClass('show');
+      },
+      success: function(data) {
+        $("#shopify-section-template--15663570714784__cart-items").load(location.href + " #shopify-section-template--15663570714784__cart-items");
+        $("#order-summary").load(location.href + " #order-summary");
+      },
+      error: function(xhr) { // if error occured
+        console.log("Error occured.please try again");
+      },
+      complete: function() {
+        $(".loader1").removeClass('show');			
+      }
+    });
+          
+
+$(document).submit("form",function () {
+  setTimeout(function(){
+   var qtyInTheCart = 0,
+    qtyInTheCart_price = 0,
+    cartUpdates = [],
+    reloads = false,
+   cartItem_quantity = 0,
+variant_id = {{ variant_id }},
+cartTotal = $('.payment-due__price').data('checkout-payment-due-target');
+  var cartItem_product = $('.product');
+console.log("cartItem_variant",cartTotal);
+    $(cartItem_product).each(function(key,items){
+console.log("key=>",key);
+console.log("items=>",items);
+var cartItem_variant = $(items).data('variant-id');
+        if (cartItem_variant == {{ variant_id }} ) {
+  var table_tr = $('.product-table').find("[data-variant-id='"+cartItem_variant+"']").css("order",1);
+          // cartItem_quantity = $(items).find('.product-thumbnail__quantity').text();
+          qtyInTheCart = $(items).find('.product-thumbnail__quantity').text();    
+        }
+});
+         
+    if (( qtyInTheCart > 0 ) && (cartTotal < {{ free_gift_over_price_40 }}  ) ) {
+         //cartUpdates =  "updates["+variant_id+"]=0"; 
+          reloads = true;
+        }else if (( {{checkout.line_items.size}} >= 1 ) && (qtyInTheCart < 1) && (cartTotal >= {{ free_gift_over_price_40 }} )){
+      cartUpdates =  "updates["+variant_id+"]=1";
+      reloads = false;
+    }else {
+      return;
+    }
+    console.log(cartUpdates);
+    $.ajax({
+      type: 'POST',
+      url: "/cart/update.js",
+      data: cartUpdates,
+      beforeSend: function() {
+        // setting a timeout
+        $(".loader1").addClass('show');
+      },
+      success: function(data) {
+        $("#order-summary").load(location.href + " #order-summary");
+      },
+      error: function(xhr) { // if error occured
+        console.log("Error occured.please try again");
+      },
+      complete: function() {
+        $(".loader1").removeClass('show');			
+      }
+    });      
+  },8000);
+ });         
+
+  setTimeout(function(){
+  $.ajax({
+      type: 'GET',
+      url: "/cart.js",
+      dataType: "json",
+      success: function(cart) {
+      console.log("cart=>",cart);
+      console.log("cart=>",cart['total_discount']);
+   $(".total-line-table__tbody").append("<tr class='total-line total-discount'><th class='total-discount__name' scope='row'>Total Saving</th><td class='total-discount__price'><span class='order-summary__emphasis skeleton-while-loading' >£"+parseFloat(cart["total_discount"]) / 100+"</span></td></tr>");
+      }
+      });
+    },10000);
+</script>
+<style>
+
+.loader1 {
+  font-size:0px;
+  padding:0px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: 0;
+  bottom: 0;
+  display: done;
+  align-items: center;
+  justify-content: center;
+}
+.loader1.show{
+  display: flex;
+}  
+.loader1 span {
+  vertical-align:middle;
+  border-radius:100%;
+
+  display:inline-block;
+  width:20px;
+  height:20px;
+  margin:3px 2px;
+  -webkit-animation:loader1 0.8s linear infinite alternate;
+  animation:loader1 0.8s linear infinite alternate;
+}
+.loader1 span:nth-child(1) {
+  -webkit-animation-delay:-1s;
+  animation-delay:-1s;
+  background:rgba(245, 103, 115,0.6);
+}
+.loader1 span:nth-child(2) {
+  -webkit-animation-delay:-0.8s;
+  animation-delay:-0.8s;
+  background:rgba(245, 103, 115,0.8);
+}
+.loader1 span:nth-child(3) {
+  -webkit-animation-delay:-0.26666s;
+  animation-delay:-0.26666s;
+  background:rgba(245, 103, 115,1);
+}
+.loader1 span:nth-child(4) {
+  -webkit-animation-delay:-0.8s;
+  animation-delay:-0.8s;
+  background:rgba(245, 103, 115,0.8);
+
+}
+.loader1 span:nth-child(5) {
+  -webkit-animation-delay:-1s;
+  animation-delay:-1s;
+  background:rgba(245, 103, 115,0.4);
+}
+
+@keyframes loader1 {
+  from {transform: scale(0, 0);}
+  to {transform: scale(1, 1);}
+}
+@-webkit-keyframes loader1 {
+  from {-webkit-transform: scale(0, 0);}
+  to {-webkit-transform: scale(1, 1);}
+}
+
+</style>

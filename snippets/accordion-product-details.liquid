@@ -1,0 +1,25 @@
+<div class="accordion-item active">
+  <div class="accordion-title">
+    Product Details
+  </div>
+  <div class="accordion-detail">
+    <table>
+      {%- if product.metafields.my_fields.fabric -%}
+      <tr>
+        <td>Fabric</td>
+        <td>{{- product.metafields.my_fields.fabric -}}</td>
+      </tr>
+      {%- endif -%}
+      {%- if product.metafields.descriptors.care_guide -%}
+        <tr>
+          <td>Care Guide</td>
+          <td>{{- product.metafields.descriptors.care_guide -}}</td>
+        </tr>
+      {%- endif -%}
+      <tr>
+        <td>Product Type</td>
+        <td>{{- product.type -}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

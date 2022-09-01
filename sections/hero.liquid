@@ -1,0 +1,161 @@
+<!-- Slider main container -->
+<div id="hero-{{ section.id }}" class="w-full h-hero overflow-hidden relative bg-murmur-grey-light">
+  <div class="hero-carousel w-full h-full">
+  
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      {% for block in section.blocks %}
+        {% if block.type == 'slide' %}
+          <style>
+            .h-hero-{{ block.id }} {
+              background-image: url({{ block.settings.image | image_url: width: 2420 }}) !important;
+            }
+            {% if block.settings.image_mobile %}
+              @media screen and (max-width:428px) {
+                .h-hero-{{ block.id }} {
+                  background-image: url({{ block.settings.image_mobile | image_url: width: 360 }}) !important;
+                }
+              }
+            {% endif %}
+          </style>
+          <a href="{{ block.settings.link }}" class="block swiper-slide bg-murmur-grey-light bg-cover bg-center w-full h-hero h-hero-{{ block.id }}" style="background-image: url({{ block.settings.image | image_url: width: 2420 }})">
+              {%- comment -%}Data{%- endcomment -%}
+              <div class="hidden">
+                <div class="hero-slide__heading">
+                  {{- block.settings.heading -}}
+                </div>
+                <div class="hero-slide__subheading">
+                  {{- block.settings.subheading -}}
+                </div>
+                <div class="hero-slide__caption__top">
+                  {{- block.settings.caption_top -}}
+                </div>
+                <div class="hero-slide__caption__bottom">
+                  {{- block.settings.caption_bottom -}}
+                </div>
+              </div>
+   
+           </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination z-20"></div>
+
+    <!-- If we need navigation buttons -->
+    {% comment %} <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div> {% endcomment %}
+  </div>
+
+  <div class="grid grid-cols-3 grid-rows-4 px-6 pb-24 lg:p-0 h-full absolute top-0 left-0 w-full z-10 pointer-events-none max-w-lg lg:max-w-none">
+    <div class="col-span-3 row-start-4 lg:row-start-3 lg:place-self-center lg:text-center">
+      <h3 class="text-body lg:text-heading-level-2 text-white lg:text-shadow font-semibold hero__subheading"></h3>
+      <h2 class="text-heading-level-2 lg:text-page-title text-white lg:text-shadow-lg font-normal hero__heading"></h2>
+      {% comment %} 
+      <button class="mt-14 pointer-events-auto">
+        {% render 'button', link: section.settings.hero_cta_link, label: 'Shop Now' %}
+      </button> 
+      {% endcomment %}
+    </div>
+    {% unless section.blocks == empty %}
+    <div class="col-start-3 row-start-4 self-center justify-self-center mx-8 hidden lg:block">
+      <div class="hero-slide__pill">
+        {% render 'pill-frosted' %}
+      </div>
+    </div>
+    {% endunless %}
+  </div>
+
+</div>
+
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "class": "hero",
+  "tag": "section",
+  "blocks": [
+    {
+      "name": "Slide",
+      "type": "slide",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (Desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (Mobile)"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading",
+          "info": "Please keep less than 140 characters",
+          "placeholder": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Sub Heading",
+          "default": "Sub Heading",
+          "info": "Please keep less than 140 characters",
+          "placeholder": "Sub Heading"
+        },
+        {
+          "type": "text",
+          "id": "caption_top",
+          "label": "Caption Top",
+          "default": "Caption Top",
+          "info": "Please keep less than 140 characters",
+          "placeholder": "Caption Top"
+        },
+        {
+          "type": "text",
+          "id": "caption_bottom",
+          "label": "Caption Bottom",
+          "default": "Caption Bottom",
+          "info": "Please keep less than 140 characters",
+          "placeholder": "Caption Bottom"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "The slide would link to a specific page"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
+
+{%- comment -%}
+Schema for Video Block:
+
+{
+  "name": "Video",
+  "type": "video",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "video_url",
+      "id": "video",
+      "label": "Video",
+      "accept": ["youtube"],
+      "info": "Video",
+      "placeholder": "Video"
+    }
+  ]
+}
+{%- endcomment -%}
