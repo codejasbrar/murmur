@@ -60,11 +60,11 @@ console.log(cbbSelects);
           var before_name = optionNaame.substring(0, optionNaame.indexOf('/'));
           
           console.log("test "+option.textContent);
-         console.log(before_name);
+          console.log(before_name);
 
           before_name = before_name.replace(/\s/g, '');
           
-var color_v = 'colour-swatch-'+`${option.textContent.split('/').pop().toLowerCase().trim().replace(/ /g, '-')}`
+          var color_v = 'colour-swatch-'+`${option.textContent.split('/').pop().toLowerCase().trim().replace(/ /g, '-')}`
           option.removeAttribute('selected')
           const button = document.createElement('button')
 
@@ -367,11 +367,11 @@ var color_v = 'colour-swatch-'+`${option.textContent.split('/').pop().toLowerCas
         textContent.split('/')[0].trim()
       )
 
-       if (buttons.lastIndexOf('Standard') > 0 || buttons.lastIndexOf('SquareOxford') > 0) {
-         product.classList.remove('force-hidden')
-      } else if (buttons.lastIndexOf(choiceSize) === -1) {
-          product.classList.add('force-hidden')
-       }
+      // if (buttons.lastIndexOf('Standard') > 0 || buttons.lastIndexOf('SquareOxford') > 0) {
+      //   product.classList.remove('force-hidden')
+      // } else if (buttons.lastIndexOf(choiceSize) === -1) {
+      //   // product.classList.add('force-hidden')
+      // }
 
       // skip product container which has "Standard" OR "SquareOxford" as the titles
       if (buttons.lastIndexOf('Standard') > 0 || buttons.lastIndexOf('Square Oxford') > 0) return

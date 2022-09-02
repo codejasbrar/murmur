@@ -244,6 +244,28 @@
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
- 
+       
+    <script>
+      function openSwatch(swathValue){
+   
+       
+
+        if(swathValue == 'Super King Size'){
+
+           $('.colour-swatch').hide();
+           $('.SuperKing').show();
+          
+           
+        } else {
+          
+         
+          $('.colour-swatch').hide();
+          $('.'+swathValue).show();
+          
+        }
+        
+      }
+    </script>
+    
   </body>
 </html>

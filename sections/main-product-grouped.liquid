@@ -266,7 +266,7 @@ Feature: Disable Colour Swatch on Product Group if user decides to
                                 form="{{ product_form_id }}"
                                 {% if option.selected_value == value %}checked{% endif %}
                           >
-                          <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+                          <label onClick="openSwatch('{{ value }}')"  for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
                             {{ value }} 
                           </label>
                         {%- endfor -%}
@@ -280,7 +280,13 @@ Feature: Disable Colour Swatch on Product Group if user decides to
                 <variant-selects class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
                   {%- for option in product.options_with_values -%}
                     <div class="product-form__input product-form__input--dropdown">
-                      <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                    
+                    {% if option.name == 'Super King Size' %}
+                      {% assign swaValue = 'SuperKing' %}
+                    {% else %}
+                      {% assign swaValue = value %} 
+                    {% endif %}
+                      <label  onClick="openSwatch('{{ swaValue }}')"  class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
                         {{ option.name }}
                       </label>
                       <div class="select">
